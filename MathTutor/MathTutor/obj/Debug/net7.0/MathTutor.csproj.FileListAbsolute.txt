@@ -1,0 +1,15 @@
+C:\GitHub\TutorFIIT-1-1-2\MathTutor\MathTutor\bin\Debug\net7.0\MathTutor.exe
+C:\GitHub\TutorFIIT-1-1-2\MathTutor\MathTutor\bin\Debug\net7.0\MathTutor.deps.json
+C:\GitHub\TutorFIIT-1-1-2\MathTutor\MathTutor\bin\Debug\net7.0\MathTutor.runtimeconfig.json
+C:\GitHub\TutorFIIT-1-1-2\MathTutor\MathTutor\bin\Debug\net7.0\MathTutor.dll
+C:\GitHub\TutorFIIT-1-1-2\MathTutor\MathTutor\bin\Debug\net7.0\MathTutor.pdb
+C:\GitHub\TutorFIIT-1-1-2\MathTutor\MathTutor\obj\Debug\net7.0\MathTutor.csproj.AssemblyReference.cache
+C:\GitHub\TutorFIIT-1-1-2\MathTutor\MathTutor\obj\Debug\net7.0\MathTutor.GeneratedMSBuildEditorConfig.editorconfig
+C:\GitHub\TutorFIIT-1-1-2\MathTutor\MathTutor\obj\Debug\net7.0\MathTutor.AssemblyInfoInputs.cache
+C:\GitHub\TutorFIIT-1-1-2\MathTutor\MathTutor\obj\Debug\net7.0\MathTutor.AssemblyInfo.cs
+C:\GitHub\TutorFIIT-1-1-2\MathTutor\MathTutor\obj\Debug\net7.0\MathTutor.csproj.CoreCompileInputs.cache
+C:\GitHub\TutorFIIT-1-1-2\MathTutor\MathTutor\obj\Debug\net7.0\MathTutor.dll
+C:\GitHub\TutorFIIT-1-1-2\MathTutor\MathTutor\obj\Debug\net7.0\refint\MathTutor.dll
+C:\GitHub\TutorFIIT-1-1-2\MathTutor\MathTutor\obj\Debug\net7.0\MathTutor.pdb
+C:\GitHub\TutorFIIT-1-1-2\MathTutor\MathTutor\obj\Debug\net7.0\MathTutor.genruntimeconfig.cache
+C:\GitHub\TutorFIIT-1-1-2\MathTutor\MathTutor\obj\Debug\net7.0\ref\MathTutor.dll
