@@ -11,7 +11,7 @@ namespace MathTutor
     {
         public string Question { get; private set; }
         public string RightAnswer { get; private set; }
-        public string Hint { get; private set; }
+        public string Hint { get;  set; }
 
         public Task(string question, string rightAnswer)
         {

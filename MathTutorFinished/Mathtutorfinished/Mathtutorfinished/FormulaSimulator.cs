@@ -370,7 +370,7 @@ namespace MathTutor
                         while (Console.ReadKey().Key != ConsoleKey.Enter) { }
 
                         Console.WriteLine($"Правильный ответ -> {formulas[i].Name}");
-                        //Thread.Sleep(5000);
+                        Thread.Sleep(2500);
                         Console.Clear();
 
                         Console.WriteLine("Вы дали правильный ответ? (да/нет)");
@@ -379,7 +379,7 @@ namespace MathTutor
                         {
                             rightAnswer = true;
                             Console.WriteLine("Отлично! Продолжайте в том же духе!");
-                            //Thread.Sleep(2000);
+                            Thread.Sleep(1000);
                             Console.Clear();
                             continue;
                         }
@@ -399,7 +399,7 @@ namespace MathTutor
                             }
 
                             Console.WriteLine("Ничего страшного, давайте попробуем ещё раз");
-                            Thread.Sleep(2000);
+                            Thread.Sleep(1000);
                             Console.Clear();
                         }
                     }
