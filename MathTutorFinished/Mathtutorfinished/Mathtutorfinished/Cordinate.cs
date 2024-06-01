@@ -1,76 +1,111 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MathTutor
 {
     public class Coordinate
     {
-        List<Rectangle> Figures;
+        List<Figure> Figures;
 
-        public Coordinate(List<Rectangle> figures)
+        public Coordinate(List<Figure> figures)
         {
             Figures = figures;
         }
+
         public Coordinate()
         {
+            Figures = new List<Figure>();
         }
+
         public void PrintFigures()
         {
             foreach (var figure in Figures)
             {
-                Console.WriteLine($"{figure.Number} прямоугольник. Координаты:\nA({figure.A.X},{figure.A.Y})\nB({figure.B.X},{figure.B.Y})\nC({figure.C.X},{figure.C.Y})\nD({figure.D.X},{figure.D.Y})");
+                figure.PrintCords();
             }
         }
-        public void PrintPerimeter(int recNum)
-        {
-            Console.WriteLine($"Периметр {recNum} прямоугольника представляет собой {Figures[recNum - 1].Perimeter()}");
-        }
-        public void PrintSquare(int recNum)
-        {
-            Console.WriteLine($"Площадь {recNum} прямоугольника представляет собойs {Figures[recNum - 1].Square()}");
-        }
-        public void PrintRemotePoint(int recNum)
-        {
-            Console.WriteLine($"Расстояние между началом координатной пластины и самой дальней точкой {recNum - 1} прямоугольника {Figures[recNum - 1].RemotePoint()}");
-        }
-        public void RotatingFigures(int recNum, double angle)
-        {
-            Figures[recNum - 1].RotateRectangle(angle);
-            Console.WriteLine($"{Figures[recNum - 1].Number} прямоугольник повернут. Новые координаты:");
-            Figures[recNum - 1].PrintCords();
-        }
-        public void MoveFigures(int recNum, int offsetX, int offsetY)
-        {
-            Figures[recNum - 1].MoveRectangle(offsetX, offsetY);
-            Console.WriteLine($"{Figures[recNum - 1].Number} прямоугольник двигаем. Новые координаты:");
-            Figures[recNum - 1].PrintCords();
-        }
-        public void ResizeFigures(int recNum, double widthFactor, double heightFactor)
-        {
 
-            Figures[recNum - 1].ResizeRectangle(widthFactor, heightFactor);
-            Console.WriteLine($"{Figures[recNum - 1].Number} размер прямоугольника изменен. Новые координаты:");
-            Figures[recNum - 1].PrintCords();
-        }
-        public List<Rectangle> PredFigures(Predicate<Rectangle> p)
+        public void PrintPerimeter(int figNum)
         {
-            Console.Write("Количество прямоугольников, удовлетворяющих предикату:\n");
-            var result = new List<Rectangle>();
+            Console.WriteLine($"Периметр {figNum} фигуры: {Figures[figNum - 1].Perimeter()}");
+        }
+
+        public void PrintSquare(int figNum)
+        {
+            Console.WriteLine($"Площадь {figNum} фигуры: {Figures[figNum - 1].Square()}");
+        }
+
+        public void PrintRemotePoint(int figNum)
+        {
+            Console.WriteLine($"Расстояние до самой удаленной точки от начала координат фигуры {figNum}: {Figures[figNum - 1].RemotePoint()}");
+        }
+
+        public void RotatingFigures(int figNum, double angle)
+        {
+            Figures[figNum - 1].Rotate(angle);
+            Console.WriteLine($"Фигура {figNum} повернута. Новые координаты:");
+            Figures[figNum - 1].PrintCords();
+        }
+
+        public void MoveFigures(int figNum, int offsetX, int offsetY)
+        {
+            Figures[figNum - 1].Move(offsetX, offsetY);
+            Console.WriteLine($"Фигура {figNum} перемещена. Новые координаты:");
+            Figures[figNum - 1].PrintCords();
+        }
+
+        public void ResizeFigures(int figNum, double widthFactor, double heightFactor)
+        {
+            Figures[figNum - 1].Resize(widthFactor, heightFactor);
+            Console.WriteLine($"Размер фигуры {figNum} изменен. Новые координаты:");
+            Figures[figNum - 1].PrintCords();
+        }
+
+        public List<Figure> PredFigures(Predicate<Figure> p)
+        {
+            Console.Write("Количество фигур, удовлетворяющих предикату:\n");
+            var result = new List<Figure>();
             foreach (var figure in Figures)
             {
                 if (p(figure))
+                {
                     Console.Write($"{figure.Number}, ");
-                result.Add(figure);
+                    result.Add(figure);
+                }
             }
             Console.WriteLine();
             return result;
         }
+
         public void AddRectangle(int ax, int ay, int bx, int by, int cx, int cy, int dx, int dy)
         {
             Figures.Add(new Rectangle(new Point(ax, ay), new Point(bx, by), new Point(cx, cy), new Point(dx, dy)));
+        }
+
+        public void AddEllipse(int centerX, int centerY, double radiusX, double radiusY)
+        {
+            Figures.Add(new Ellipse(new Point(centerX, centerY), radiusX, radiusY));
+        }
+
+        public void PrintRectangleWithMinPerimeter()
+        {
+            var rectangles = Figures.OfType<Rectangle>();
+            if (rectangles.Any())
+            {
+                var minPerimeterRectangle = rectangles.OrderBy(r => r.Perimeter()).First();
+                Console.WriteLine($"Прямоугольник с минимальным периметром: {minPerimeterRectangle.Number}, периметр: {minPerimeterRectangle.Perimeter()}");
+            }
+            else
+            {
+                Console.WriteLine("Нет прямоугольников.");
+            }
+        }
+
+        public void PrintCircleCount()
+        {
+            var circleCount = Figures.OfType<Ellipse>().Count(e => e.IsCircle());
+            Console.WriteLine($"Количество эллипсов, являющихся окружностями: {circleCount}");
         }
     }
 }
