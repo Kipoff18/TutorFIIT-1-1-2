@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace MathTutor
 {
@@ -11,20 +10,39 @@ namespace MathTutor
     {
         private List<Task> _questionBank;
         private List<Task> _questionHistory;
+
         public Generator()
         {
             _questionBank = new List<Task>();
             _questionHistory = new List<Task>();
+            LoadQuestionsFromFile("BankOfQuestions.txt");
+        }
+
+        private void LoadQuestionsFromFile(string filename)
+        {
+            var content = File.ReadAllText(filename).Replace("\r", "");
             var pattern = @"[\d]. (\D+):\n\na\) (.+)\n(Ответ: .+)\n\nb\) (.+)\n(Ответ: .+)\n\nc\) (.+)\n(Ответ: .+)\n\nd\) (.+)\n(Ответ: .+)\n\ne\) (.+)\n(Ответ: .+)\n\n";
-            foreach (Match item in Regex.Matches(File.ReadAllText("BankOfQuestions.txt").Replace("\r", ""), pattern))
+
+            foreach (Match item in Regex.Matches(content, pattern))
             {
-                _questionBank.Add(new Task(item.Groups[2].Value, item.Groups[3].Value));
-                _questionBank.Add(new Task(item.Groups[4].Value, item.Groups[5].Value));
-                _questionBank.Add(new Task(item.Groups[6].Value, item.Groups[7].Value));
-                _questionBank.Add(new Task(item.Groups[8].Value, item.Groups[9].Value));
-                _questionBank.Add(new Task(item.Groups[10].Value, item.Groups[11].Value));
+                var question = item.Groups[1].Value;
+                var answers = new List<string>
+                {
+                    item.Groups[2].Value,
+                    item.Groups[4].Value,
+                    item.Groups[6].Value,
+                    item.Groups[8].Value,
+                    item.Groups[10].Value
+                };
+
+                var rightAnswer = item.Groups[3].Value;
+                var multipleChoiceTask = new MultipleChoiceTask(question, rightAnswer, answers);
+                multipleChoiceTask.ShuffleAnswers();
+
+                _questionBank.Add(multipleChoiceTask);
             }
         }
+
         public void PrintQuestionBank()
         {
             foreach (var item in _questionBank)
@@ -35,8 +53,9 @@ namespace MathTutor
 
         private string GiveHelp(Task task)
         {
-            return task.Hint;
+            return task is MultipleChoiceTask mcTask ? mcTask.Hint : task.Hint;
         }
+
         public void CreateVariationsFromFile(int numberOfVariants, int numberOfTasks)
         {
             while (numberOfTasks > 50)
@@ -49,6 +68,7 @@ namespace MathTutor
                 Console.WriteLine("Значение количества вариантов слишком большое, введите меньше:");
                 numberOfVariants = int.Parse(Console.ReadLine());
             }
+
             var random = new Random();
             for (int i = 0; i < numberOfVariants; i++)
             {
@@ -56,13 +76,17 @@ namespace MathTutor
                 var filenameHint = $"Подсказки к варианту №{i + 1}.txt";
                 for (int j = 0; j < numberOfTasks; j++)
                 {
-                    var randomTaskNumber = random.Next(0, 50);
+                    var randomTaskNumber = random.Next(0, _questionBank.Count);
                     while (_questionHistory.Contains(_questionBank[randomTaskNumber]))
                     {
-                        randomTaskNumber = random.Next(0, 50);
+                        randomTaskNumber = random.Next(0, _questionBank.Count);
                     }
-                    File.AppendAllText(filenameVariant, $"{j + 1}. {_questionBank[randomTaskNumber].Question}\n");
-                    File.AppendAllText(filenameHint, $"{j + 1}. {GiveHelp(_questionBank[randomTaskNumber])}\n");
+
+                    var task = _questionBank[randomTaskNumber];
+                    _questionHistory.Add(task);
+
+                    File.AppendAllText(filenameVariant, $"{j + 1}. {task}\n");
+                    File.AppendAllText(filenameHint, $"{j + 1}. {GiveHelp(task)}\n");
                 }
             }
         }
